@@ -15,6 +15,8 @@ const db = firebase.firestore();
 
 // FUNÇÕES FIREBASE
 
+let presentName = ''
+
 async function addDefaultPresents() {
     const colectionName = 'presents';
     const defaultPresentsList = ['presente 1', 'presente 2', 'presente 3'];
@@ -28,6 +30,11 @@ async function addDefaultPresents() {
 
     defaultPresentsList.forEach(presentName => addPresent(presentName));
 }
+
+function addMockPresents() {
+    const defaultPresentsList = ['presente 4', 'presente 4', 'presente 5'];
+    defaultPresentsList.forEach(presentName => addPresent(presentName));
+} 
 
 function addPresent(name, isPromised = false, promisedBy = '') {
     db.collection('presents').doc(name).set({
@@ -58,10 +65,19 @@ async function getPresents(isPromised) {
 async function promisePresent() {
     const checkedPresent = document.querySelector('.availablePresentCheck:checked');
     if (checkedPresent) {
-        const presentName = checkedPresent.value;
-        updatePresent(presentName, true, '');
-        setListValues();
+        presentName = checkedPresent.value;
+        document.getElementById("promissePresentModal").style.display = "flex";
     }
+}
+
+function confirmPromissedPresent() {
+    document.getElementById("promissePresentModal").style.display = "none";
+    updatePresent(presentName, true, '');
+    setListValues();
+}
+
+function closePromissedPresentModal() {
+    document.getElementById("promissePresentModal").style.display = "none";
 }
 
 

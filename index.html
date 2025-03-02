@@ -27,6 +27,23 @@
             </div>
         </div>
         <p class="madeBy">Feito por Anna Carolina França</p>
+        
+        <div id="promissePresentModal" class="modal">
+            <div class="modal-content">
+                <button class="close" onclick="closePromissedPresentModal()">×</button>
+                <!-- <h1 class="modalTitle">Presente escolhido!</h1> -->
+                <p>Você quer dar um <span id="promissedPresent">presente</span> para os noivos?</p>
+                <p class="textSecondary">
+                    Se identifique para que os noivos possam agradecer depois (não se preocupe, só os noivos vão ver seu nome)
+                </p>
+                
+                <input type="text" class="input-field" placeholder="Seu nome">
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="closePromissedPresentModal()">Cancelar</button>
+                    <button class="btn-primary" onclick="confirmPromissedPresent()">Sem eu quero!</button>
+                </div>
+            </div>
+        </div>
     </div>
     <button class="floatingButton" id="choosePresentButton">
         <i class="fas fa-check"></i> Escolhido
