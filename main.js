@@ -10,12 +10,9 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-// addDefaultPresents();
 
 
 // FUNÇÕES FIREBASE
-
-let presentName = ''
 
 async function addDefaultPresents() {
     const colectionName = 'presents';
@@ -36,6 +33,8 @@ function addMockPresents() {
     defaultPresentsList.forEach(presentName => addPresent(presentName));
 } 
 
+
+
 function addPresent(name, isPromised = false, promisedBy = '') {
     db.collection('presents').doc(name).set({
         'name': name,
@@ -43,6 +42,9 @@ function addPresent(name, isPromised = false, promisedBy = '') {
         'promisedBy': promisedBy,
     }).catch(error => console.error('Erro ao adicionar presente: ', error));
 }
+
+
+
 
 async function updatePresent(name, isPromised, promisedBy) {
     await db.collection('presents').doc(name).update({
@@ -62,30 +64,12 @@ async function getPresents(isPromised) {
     return presents;
 }
 
-async function promisePresent() {
-    const checkedPresent = document.querySelector('.availablePresentCheck:checked');
-    if (checkedPresent) {
-        presentName = checkedPresent.value;
-        document.getElementById("promissePresentModal").style.display = "flex";
-    }
-}
-
-function confirmPromissedPresent() {
-    document.getElementById("promissePresentModal").style.display = "none";
-    updatePresent(presentName, true, '');
-    setListValues();
-}
-
-function closePromissedPresentModal() {
-    document.getElementById("promissePresentModal").style.display = "none";
-}
-
-
 
 // CÓDIGO PRINCIPAL
 
 let availableList = [];
 let promisedList = [];
+let choosedPresent = ''
 
 init();
 
@@ -94,17 +78,17 @@ async function init() {
     listenEvents();
 }
 
-
 function listenEvents() {
     const checkboxes = document.querySelectorAll(".availablePresentCheck");
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener("change", function () {
             checkboxes.forEach(cb => cb.checked = false); 
             this.checked = true;
+            choosedPresent = this.value;
         });
     });
 
-    document.getElementById('choosePresentButton').addEventListener('click', promisePresent);
+    document.getElementById('choosePresentButton').addEventListener('click', openPromissePresentModal);
 }
 
 async function setListValues() {
@@ -130,5 +114,23 @@ async function setListValues() {
             </li>
         `;
     });
+}
 
+async function openPromissePresentModal() {
+    document.getElementById("promissePresentModal").style.display = "flex";
+    document.getElementById("promissedPresent").innerHTML = choosedPresent;
+}
+
+function confirmPromissedPresent() {
+    let promisedBy = document.getElementById("promissedByInput").value;
+    console.log(promisedBy)
+    if(promisedBy != '') {
+        document.getElementById("promissePresentModal").style.display = "none";
+        updatePresent(choosedPresent, true, promisedBy);
+        setListValues();
+    }
+}
+
+function closePromissedPresentModal() {
+    document.getElementById("promissePresentModal").style.display = "none";
 }
