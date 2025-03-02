@@ -11,12 +11,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-
 // FUNÇÕES FIREBASE
 
 async function addDefaultPresents() {
     const colectionName = 'presents';
-    const defaultPresentsList = ['presente 1', 'presente 2', 'presente 3'];
+    const defaultPresentsList = window.presentesCasamento;
 
     await db.collection(colectionName).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -28,13 +27,6 @@ async function addDefaultPresents() {
     defaultPresentsList.forEach(presentName => addPresent(presentName));
 }
 
-function addMockPresents() {
-    const defaultPresentsList = ['presente 4', 'presente 4', 'presente 5'];
-    defaultPresentsList.forEach(presentName => addPresent(presentName));
-} 
-
-
-
 function addPresent(name, isPromised = false, promisedBy = '') {
     db.collection('presents').doc(name).set({
         'name': name,
@@ -42,9 +34,6 @@ function addPresent(name, isPromised = false, promisedBy = '') {
         'promisedBy': promisedBy,
     }).catch(error => console.error('Erro ao adicionar presente: ', error));
 }
-
-
-
 
 async function updatePresent(name, isPromised, promisedBy) {
     await db.collection('presents').doc(name).update({
