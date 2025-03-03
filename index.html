@@ -30,7 +30,7 @@
         
         <div id="promissePresentModal" class="modal">
             <div class="modal-content">
-                <button class="close" onclick="closePromissedPresentModal()">×</button>
+                <button class="close" onclick="closeModal('promissePresentModal')">×</button>
                 <p>Você quer dar um(a) <span id="promissedPresent">presente</span> para os noivos?</p>
                 <p class="textSecondary">
                     Se identifique para que os noivos possam agradecer depois (não se preocupe, só os noivos vão ver seu nome)
@@ -38,8 +38,18 @@
                 
                 <input id="promissedByInput" type="text" class="input-field" placeholder="Seu nome">
                 <div class="modal-footer">
-                    <button class="btn-secondary" onclick="closePromissedPresentModal()">Cancelar</button>
+                    <button class="btn-secondary" onclick="closeModal('promissePresentModal')">Cancelar</button>
                     <button class="btn-primary" onclick="confirmPromissedPresent()">Sem eu quero!</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="errorModal" class="modal">
+            <div class="modal-content">
+                <button class="close" onclick="closeModal('errorModal')">×</button>
+                <p>Marque na lista o presente que você quer dar aos noivos e volte aqui para avisá-los da sua escolha!</p>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="closeModal('errorModal')">Ok</button>
                 </div>
             </div>
         </div>

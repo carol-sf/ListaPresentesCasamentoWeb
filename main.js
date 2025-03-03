@@ -106,8 +106,13 @@ async function setListValues() {
 }
 
 async function openPromissePresentModal() {
-    document.getElementById("promissePresentModal").style.display = "flex";
-    document.getElementById("promissedPresent").innerHTML = choosedPresent;
+    const hasChecked = document.querySelector(`#availableList .availablePresentCheck:checked`) !== null;
+    if(hasChecked) {
+        document.getElementById("promissePresentModal").style.display = "flex";
+        document.getElementById("promissedPresent").innerHTML = choosedPresent;
+    } else {
+        document.getElementById("errorModal").style.display = "flex";
+    }
 }
 
 function confirmPromissedPresent() {
@@ -120,6 +125,6 @@ function confirmPromissedPresent() {
     }
 }
 
-function closePromissedPresentModal() {
-    document.getElementById("promissePresentModal").style.display = "none";
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = "none";
 }
