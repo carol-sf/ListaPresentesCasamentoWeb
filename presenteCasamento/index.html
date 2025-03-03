@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E & J - Lista de Presentes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap&family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div class="mainContainer">
+        <div class="container">
+            <h1>Lista de Presentes</h1>
+            <h2>Júnior & Emilly</h2>
+            <div class="listContainer">
+                <div class="list">
+                    <h3>Ainda não temos</h3>
+                    <ul id="availableList"></ul>
+                </div>
+                <div class="list promissedContainer">
+                    <h3>Estão prometidos 😊</h3>
+                    <ul id="promisedList"></ul>
+                </div>
+            </div>
+        </div>
+        <p class="madeBy">Feito por Anna Carolina França</p>
+        
+        <div id="promissePresentModal" class="modal">
+            <div class="modal-content">
+                <button class="close" onclick="closeModal('promissePresentModal')">×</button>
+                <p>Você quer dar um(a) <span id="promissedPresent">presente</span> para os noivos?</p>
+                <p class="textSecondary">
+                    Se identifique para que os noivos possam agradecer depois (não se preocupe, só os noivos vão ver seu nome)
+                </p>
+                
+                <input id="promissedByInput" type="text" class="input-field" placeholder="Seu nome">
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="closeModal('promissePresentModal')">Cancelar</button>
+                    <button class="btn-primary" onclick="confirmPromissedPresent()">Sem eu quero!</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="errorModal" class="modal">
+            <div class="modal-content">
+                <button class="close" onclick="closeModal('errorModal')">×</button>
+                <p>Marque na lista o presente que você quer dar aos noivos e volte aqui para avisá-los da sua escolha!</p>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="closeModal('errorModal')">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="floatingButton" id="choosePresentButton">
+        <i class="fas fa-check"></i> Escolhido
+    </button>
+
+    <script src="data.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
