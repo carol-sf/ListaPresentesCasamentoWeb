@@ -10,12 +10,12 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-const colectionName = 'presentesCasamento';
+const colectionName = 'chaPanela';
 
 // FUNÇÕES FIREBASE
 
 async function addDefaultPresents() {
-    const defaultPresentsList = window.presentesCasamento;
+    const defaultPresentsList = window.chaPanela;
 
     await db.collection(colectionName).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -118,11 +118,9 @@ async function openPromissePresentModal() {
 function confirmPromissedPresent() {
     let promisedBy = document.getElementById("promissedByInput").value;
     console.log(promisedBy)
-    if(promisedBy != '') {
-        document.getElementById("promissePresentModal").style.display = "none";
-        updatePresent(choosedPresent, true, promisedBy);
-        setListValues();
-    }
+    document.getElementById("promissePresentModal").style.display = "none";
+    updatePresent(choosedPresent, true, promisedBy);
+    setListValues();
 }
 
 function closeModal(modalId) {
