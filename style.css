@@ -38,8 +38,10 @@ h2 {
 }
 h3 {
     font-size: 1em;
-    color: #4d4c4c;
-    font-weight: 500;
+    color: #757474;
+    font-weight: bold;
+    /* color: #4d4c4c; */
+    /* font-weight: 500; */
     text-align: left;
 }
 ul {
@@ -68,6 +70,8 @@ input[type="checkbox"] {
     margin-right: 20px;
     flex: 1 1 200px;
 }
+
+
 
 
 .floatingButton {
@@ -161,12 +165,6 @@ input[type="checkbox"] {
     background-color: rgb(233, 95, 82);
 }
 
-/* .modalTitle {
-    color: gray;
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-} */
-
 .input-field {
     width: 90%;
     padding: 10px;
@@ -174,7 +172,6 @@ input[type="checkbox"] {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
-    /* text-align: center; */
 }
 
 .modal p {
@@ -184,4 +181,28 @@ input[type="checkbox"] {
 .textSecondary {
     color: gray;
     font-size: 12px;
+}
+
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2em;
+    }
+    
+    h2 {
+        font-size: 1.3em;
+    }
+    
+    .promissedContainer {
+        margin-top: 40px;
+    }
+    
+    #promisedList > li > label {
+        color: gray;
+    }
+
+    .mainContainer {
+        width: 100%;
+        margin: 20px;
+    }
 }
