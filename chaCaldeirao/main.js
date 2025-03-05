@@ -14,27 +14,6 @@ const colectionName = 'chaCaldeirao';
 
 // FUNÇÕES FIREBASE
 
-async function addDefaultPresents() {
-    const defaultPresentsList = window.chaCaldeirao;
-
-    await db.collection(colectionName).get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            db.collection(colectionName).doc(doc.id).delete()
-            .catch(error => console.error("Erro ao apagar documento: ", error));
-        });
-    }).catch(error => console.error("Erro ao buscar documentos para apagar: ", error));
-
-    defaultPresentsList.forEach(presentName => addPresent(presentName));
-}
-
-function addPresent(name, isPromised = false, promisedBy = '') {
-    db.collection(colectionName).doc(name).set({
-        'name': name,
-        'isPromised': isPromised,
-        'promisedBy': promisedBy,
-    }).catch(error => console.error('Erro ao adicionar presente: ', error));
-}
-
 async function updatePresent(name, isPromised, promisedBy) {
     await db.collection(colectionName).doc(name).update({
         'name': name,
@@ -45,7 +24,9 @@ async function updatePresent(name, isPromised, promisedBy) {
 
 async function getPresents(isPromised) {
     let presents = [];
-    await db.collection(colectionName).where('isPromised', '==', isPromised).get()
+    await db.collection(colectionName).where('isPromised', '==', isPromised)
+        .orderBy('createdAt', 'asc')
+        .get()
         .then((querySnapshot) => {
             if (!querySnapshot.empty) 
                 querySnapshot.forEach((doc) => presents.push(doc.data().name));

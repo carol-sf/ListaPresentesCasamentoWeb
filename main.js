@@ -13,23 +13,16 @@ const db = firebase.firestore();
 
 // FUNÇÕES FIREBASE
 
-function addPresent(name, isPromised = false, promisedBy = '') {
+function addPresent(colectionName, name, isPromised = false, promisedBy = '') {
     db.collection(colectionName).doc(name).set({
         'name': name,
         'isPromised': isPromised,
         'promisedBy': promisedBy,
+        'createdAt': firebase.firestore.FieldValue.serverTimestamp(),
     }).catch(error => console.error('Erro ao adicionar presente: ', error));
 }
 
-async function addDefaultPresents() {
-    const defaultPresentsList = window.presentesCasamento;
-
-    await db.collection(colectionName).get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            db.collection(colectionName).doc(doc.id).delete()
-            .catch(error => console.error("Erro ao apagar documento: ", error));
-        });
-    }).catch(error => console.error("Erro ao buscar documentos para apagar: ", error));
-
-    defaultPresentsList.forEach(presentName => addPresent(presentName));
+async function addDefaultPresents(colectionName) {
+    const defaultPresentsList = window[colectionName];
+    defaultPresentsList.forEach(presentName => addPresent(colectionName, presentName));
 }
