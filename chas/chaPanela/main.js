@@ -64,26 +64,39 @@ function listenEvents() {
 async function setListValues() {
     availableList = await getPresents(false);
     document.getElementById('availableList').innerHTML = '';
-    availableList.forEach(present => {
-        document.getElementById('availableList').innerHTML += `
-            <li>
-                <input type="checkbox" value="${present}" id="${present}" class="availablePresentCheck">
-                <label for="${present}">${present}</label>
-            </li>
-        `;
-    });
+    if(availableList.length > 0) {
+        availableList.forEach(present => {
+            document.getElementById('availableList').innerHTML += `
+                <li>
+                    <input type="checkbox" value="${present}" id="${present}" class="availablePresentCheck">
+                    <label for="${present}">${present}</label>
+                </li>
+            `;
+        });
+    } else {
+        document.getElementById('promisedList').innerHTML += `
+            <p>Todos os presentes que sugerimos já foram escolhidos! 🎉🥳</p>
+            <p>Mas fique a vontade pra nos ajudar com o que desejar.</p>
+        `;      
+    }
 
     
     promisedList = await getPresents(true);
     document.getElementById('promisedList').innerHTML = '';
-    promisedList.forEach(present => {
+    if(promisedList.length > 0) {
+        promisedList.forEach(present => {
+            document.getElementById('promisedList').innerHTML += `
+                <li>
+                    <input type="checkbox" value="${present}" id="${present}" checked disabled>
+                    <label for="${present}">${present}</label>
+                </li>
+            `;
+        });
+    } else {
         document.getElementById('promisedList').innerHTML += `
-            <li>
-                <input type="checkbox" value="${present}" id="${present}" checked disabled>
-                <label for="${present}">${present}</label>
-            </li>
-        `;
-    });
+            <p>Ainda não temos nenhum presente... Você pode ser o primeiro!</p>
+        `;        
+    }
 }
 
 async function openPromissePresentModal() {
