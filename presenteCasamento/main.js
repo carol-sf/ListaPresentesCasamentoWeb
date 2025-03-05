@@ -112,11 +112,10 @@ async function openPromissePresentModal() {
 function confirmPromissedPresent() {
     let promisedBy = document.getElementById("promissedByInput").value;
     console.log(promisedBy)
-    if(promisedBy != '') {
-        document.getElementById("promissePresentModal").style.display = "none";
-        updatePresent(choosedPresent, true, promisedBy);
-        setListValues();
-    }
+    document.getElementById("promissePresentModal").style.display = "none";
+    updatePresent(choosedPresent, true, promisedBy);
+    setListValues();
+    sendEmail(promisedBy, choosedPresent, 'Casamento');
 }
 
 function closeModal(modalId) {

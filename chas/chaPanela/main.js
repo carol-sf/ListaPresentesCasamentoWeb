@@ -115,6 +115,7 @@ function confirmPromissedPresent() {
     document.getElementById("promissePresentModal").style.display = "none";
     updatePresent(choosedPresent, true, promisedBy);
     setListValues();
+    sendEmail(promisedBy, choosedPresent, 'Chá de Panela');
 }
 
 function closeModal(modalId) {
