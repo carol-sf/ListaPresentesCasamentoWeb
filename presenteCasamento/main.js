@@ -15,16 +15,27 @@ const colectionName = 'presentesCasamento';
 // FUNÇÕES FIREBASE
 
 async function updatePresent(name, isPromised, promisedBy) {
-    await db.collection(colectionName).doc(name).update({
-        'name': name,
-        'isPromised': isPromised,
-        'promisedBy': promisedBy,
+    const snapshot = await db.collection(colectionName)
+        .where('name', '==', name) // Filtra pelo campo "name"
+        .get();
+
+    if (snapshot.empty) {
+        console.error('Nenhum presente encontrado com esse nome.');
+        return;
+    }
+
+    const docRef = snapshot.docs[0].ref;
+    await docRef.update({
+        isPromised: isPromised,
+        promisedBy: promisedBy,
     }).catch(error => console.error('Erro ao atualizar presente: ', error));
 }
 
-async function getPresents(isPromised) {
+async function getPresents(isPromised, isPix = null) {
     let presents = [];
-    await db.collection(colectionName).where('isPromised', '==', isPromised)
+    let query = db.collection(colectionName).where('isPromised', '==', isPromised);
+    if(isPix != null) query = query.where('isPix', '==', isPix);
+    await query
         .orderBy('createdAt', 'asc')
         .get()
         .then((querySnapshot) => {
@@ -37,6 +48,7 @@ async function getPresents(isPromised) {
 
 // CÓDIGO PRINCIPAL
 
+let pixList = [];
 let availableList = [];
 let promisedList = [];
 let choosedPresent = ''
@@ -62,7 +74,25 @@ function listenEvents() {
 }
 
 async function setListValues() {
-    availableList = await getPresents(false);
+    pixList = await getPresents(false, true);
+    document.getElementById('pixList').innerHTML = '';
+    if(pixList.length > 0) {
+        pixList.forEach(present => {
+            document.getElementById('pixList').innerHTML += `
+                <li>
+                    <input type="checkbox" value="${present}" id="${present}" class="availablePresentCheck">
+                    <label for="${present}">${present}</label>
+                </li>
+            `;
+        });
+    } else {
+        document.getElementById('promisedList').innerHTML += `
+            <p>Todas as sugestões de pix já foram escolhidas! 🎉🥳</p>
+            <p>Mas fique a vontade pra nos ajudar com o que desejar.</p>
+        `;      
+    }
+    
+    availableList = await getPresents(false, false);
     document.getElementById('availableList').innerHTML = '';
     if(availableList.length > 0) {
         availableList.forEach(present => {
@@ -100,10 +130,12 @@ async function setListValues() {
 }
 
 async function openPromissePresentModal() {
-    const hasChecked = document.querySelector(`#availableList .availablePresentCheck:checked`) !== null;
+    const hasChecked = document.querySelector(`#availablePresents .availablePresentCheck:checked`) !== null;
     if(hasChecked) {
         document.getElementById("promissePresentModal").style.display = "flex";
         document.getElementById("promissedPresent").innerHTML = choosedPresent;
+        
+        console.log(choosedPresent)
     } else {
         document.getElementById("errorModal").style.display = "flex";
     }
@@ -111,7 +143,6 @@ async function openPromissePresentModal() {
 
 function confirmPromissedPresent() {
     let promisedBy = document.getElementById("promissedByInput").value;
-    console.log(promisedBy)
     document.getElementById("promissePresentModal").style.display = "none";
     updatePresent(choosedPresent, true, promisedBy);
     setListValues();

@@ -13,16 +13,18 @@ const db = firebase.firestore();
 
 // FUNÇÕES FIREBASE
 
-function addPresent(colectionName, name, isPromised = false, promisedBy = '') {
+function addPresent(colectionName, name, isPix, isPromised = false, promisedBy = '') {
     db.collection(colectionName).add({
         'name': name,
+        'isPix': isPix,
         'isPromised': isPromised,
         'promisedBy': promisedBy,
         'createdAt': firebase.firestore.FieldValue.serverTimestamp(),
     }).catch(error => console.error('Erro ao adicionar presente: ', error));
 }
 
-async function addDefaultPresents(colectionName) {
+async function addDefaultPresents(colectionName, isPix) {
     const defaultPresentsList = window[colectionName];
-    defaultPresentsList.forEach(presentName => addPresent(colectionName, presentName));
+    if(isPix) colectionName = 'presentesCasamento';
+    defaultPresentsList.forEach(presentName => addPresent(colectionName, presentName, isPix));
 }
