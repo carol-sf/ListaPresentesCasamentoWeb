@@ -14,7 +14,7 @@ const db = firebase.firestore();
 // FUNÇÕES FIREBASE
 
 function addPresent(colectionName, name, isPromised = false, promisedBy = '') {
-    db.collection(colectionName).doc(name).set({
+    db.collection(colectionName).add({
         'name': name,
         'isPromised': isPromised,
         'promisedBy': promisedBy,

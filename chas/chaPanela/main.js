@@ -28,7 +28,7 @@ async function getPresents(isPromised) {
         .orderBy('createdAt', 'asc')
         .get()
         .then((querySnapshot) => {
-            if (!querySnapshot.empty) 
+            if (!querySnapshot.empty)   
                 querySnapshot.forEach((doc) => presents.push(doc.data().name));
         }).catch(error => console.error("Erro ao buscar presentes:", error));
     return presents;
