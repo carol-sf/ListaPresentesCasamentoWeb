@@ -15,10 +15,19 @@ const colectionName = 'chaCaldeirao';
 // FUNÇÕES FIREBASE
 
 async function updatePresent(name, isPromised, promisedBy) {
-    await db.collection(colectionName).doc(name).update({
-        'name': name,
-        'isPromised': isPromised,
-        'promisedBy': promisedBy,
+    const snapshot = await db.collection(colectionName)
+        .where('name', '==', name) // Filtra pelo campo "name"
+        .get();
+
+    if (snapshot.empty) {
+        console.error('Nenhum presente encontrado com esse nome.');
+        return;
+    }
+
+    const docRef = snapshot.docs[0].ref;
+    await docRef.update({
+        isPromised: isPromised,
+        promisedBy: promisedBy,
     }).catch(error => console.error('Erro ao atualizar presente: ', error));
 }
 
