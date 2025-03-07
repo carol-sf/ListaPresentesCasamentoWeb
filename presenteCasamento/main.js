@@ -77,10 +77,12 @@ let promisedList = [];
 let choosedPresent = [];
 let travelHelp = '';
 const TRAVEL_TOTAL_VALUE = 2600;
+const PIX_KEY = 'testandooo';
 
 init();
 
 async function init() {
+    document.getElementById('pixKeyLabel').innerHTML = PIX_KEY;
     await setListValues();
     listenEvents();
 }
@@ -101,6 +103,7 @@ function listenEvents() {
     });
 
     document.getElementById('choosePresentButton').addEventListener('click', openPromissePresentModal);
+    document.getElementById('pixKeyContainer').addEventListener('click', copyPixKey);
 }
 
 async function setListValues() {
@@ -200,4 +203,26 @@ async function confirmPromissedPresent() {
 
 function closeModal(modalId) {
     document.getElementById(modalId).style.display = "none";
+}
+
+function copyPixKey() {
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(PIX_KEY).then(() => {
+            alert("Chave Pix copiada!");
+        }).catch(err => {
+            console.error("Erro ao copiar chave Pix:", err);
+        });
+    } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = PIX_KEY;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand("copy");
+            alert("Chave Pix copiada!");
+        } catch (err) {
+            console.error("Erro ao copiar chave Pix:", err);
+        }
+        document.body.removeChild(textArea);
+    }
 }

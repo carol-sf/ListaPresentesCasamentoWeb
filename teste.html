@@ -1,91 +1,42 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel dos Noivos</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #FAE1DD;
-            color: #5E2B2B;
-            text-align: center;
-            padding: 20px;
-        }
-        .tabs {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .tab {
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            background-color: #F4AC9C;
-            color: white;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        .tab.active {
-            background-color: #E66A5D;
-        }
-        .gift-list {
-            max-width: 500px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .gift-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            border-bottom: 1px solid #F4AC9C;
-        }
-    </style>
-</head>
-<body>
-    <h1>Painel dos Noivos</h1>
-    <div class="tabs">
-        <button class="tab active" onclick="showGifts('casamento', this)">Casamento</button>
-        <button class="tab" onclick="showGifts('chaPanela', this)">Chá de Panela</button>
-        <button class="tab" onclick="showGifts('chaCaldeirao', this)">Chá de Caldeirão</button>
+<div>
+    <h3 style="margin-top: 40px;">Vaquinha para a nossa Lua de Mel</h3>
+    <div>
+        <span id="progressBarLabel" class="progress-bar-label">R$0,00 de R$2600,00</span>
+        <div class="progress-container">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
     </div>
-    <div class="gift-list" id="giftList"></div>
-    <script>
-        const giftsData = {
-            casamento: [
-                { name: "Jogo de panelas", giver: "Maria Silva" },
-                { name: "Aspirador de pó", giver: "Carlos Souza" }
-            ],
-            chaPanela: [
-                { name: "Conjunto de talheres", giver: "Ana Lima" },
-                { name: "Forma de bolo", giver: "João Oliveira" }
-            ],
-            chaCaldeirao: [
-                { name: "Caldeirão de ferro", giver: "Fernanda Costa" },
-                { name: "Colher de pau gigante", giver: "Rafael Mendes" }
-            ]
-        };
+    <input id="inputTravelHelp" type="number" class="input-field" placeholder="R$">
 
-        function showGifts(category, btn) {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            btn.classList.add('active');
-            
-            const giftList = document.getElementById('giftList');
-            giftList.innerHTML = `<h2>Presentes - ${btn.innerText}</h2>` +
-                giftsData[category].map(gift => `
-                    <div class="gift-item">
-                        <span>${gift.name}</span>
-                        <strong>${gift.giver}</strong>
-                    </div>`
-                ).join('');
-        }
+    <div style="margin-top: 20px;">
+        <span id="pixKey">00000000-0000-0000-0000-000000000000</span>
+        <button onclick="copyPixKey()" class="copy-button">Copiar</button>
+    </div>
+</div>
 
-        // Exibir a primeira lista por padrão
-        showGifts('casamento', document.querySelector('.tab'));
-    </script>
-</body>
-</html>
+<script>
+    function copyPixKey() {
+        const pixKey = document.getElementById("pixKey").innerText;
+        navigator.clipboard.writeText(pixKey).then(() => {
+            alert("Chave Pix copiada!");
+        }).catch(err => {
+            console.error("Erro ao copiar chave Pix:", err);
+        });
+    }
+</script>
+
+<style>
+    .copy-button {
+        margin-left: 10px;
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .copy-button:hover {
+        background-color: #0056b3;
+    }
+</style>
