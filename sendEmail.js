@@ -6,8 +6,6 @@
 })();
 
 function sendEmail(promissedBy, present, presentType) {
-    console.log('Cheguei na função')
-
     emailjs.send("service_wooco4o","template_cn7rs1n",{
         presentType: presentType,
         present: present,
