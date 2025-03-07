@@ -45,6 +45,29 @@ async function getPresents(isPromised, isPix = null) {
     return presents;
 }
 
+async function addTravelHelp(amount, promisedBy = '') {
+    db.collection('luaDeMel').add({
+        'amount': amount,
+        'promisedBy': promisedBy,
+        'createdAt': firebase.firestore.FieldValue.serverTimestamp(),
+    }).catch(error => console.error('Erro ao adicionar valor para a lua de mel: ', error));
+}
+
+async function getAmountTravelHelp() {
+    let totalAmount = 0;
+    await db.collection('luaDeMel')
+        .get()
+        .then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                let amountStr = doc.data().amount;
+                let amount = parseFloat(amountStr.replace('R$', '').replace(',', '.')); 
+                totalAmount += amount; 
+            });
+        })
+        .catch(error => console.error('Erro ao obter o total arrecadado: ', error));
+    return totalAmount.toFixed(2);
+}
+
 
 // CÓDIGO PRINCIPAL
 
@@ -52,6 +75,8 @@ let pixList = [];
 let availableList = [];
 let promisedList = [];
 let choosedPresent = [];
+let travelHelp = '';
+const TRAVEL_TOTAL_VALUE = 2600;
 
 init();
 
@@ -114,7 +139,6 @@ async function setListValues() {
             <p>Mas fique a vontade pra nos ajudar com o que desejar.</p>
         `;      
     }
-
     
     promisedList = await getPresents(true);
     document.getElementById('promisedList').innerHTML = '';
@@ -132,31 +156,45 @@ async function setListValues() {
             <p>Ainda não temos nenhum presente... Você pode ser o primeiro!</p>
         `;        
     }
+    
+    const amountTravelHelp = await getAmountTravelHelp();
+    const progressPercentage = (amountTravelHelp / TRAVEL_TOTAL_VALUE) * 100;
+    document.getElementById("progressBar").style.width = progressPercentage + "%";
+    document.getElementById("progressBarLabel").innerHTML = `R$${amountTravelHelp} de R$${TRAVEL_TOTAL_VALUE}`;
 }
 
 async function openPromissePresentModal() {
     const hasChecked = document.querySelector(`#availablePresents .availablePresentCheck:checked`) !== null;
-    if(hasChecked) {
+    const travelHelpText = document.getElementById('inputTravelHelp').value;
+    if(hasChecked || travelHelpText != '') {
         document.getElementById("promissePresentModal").style.display = "flex";
-        document.getElementById("promissedPresent").innerHTML = '';
+        const presentsListEl = document.getElementById("promissedPresent");
+        presentsListEl.innerHTML = '';
         choosedPresent.forEach(present => {
-            document.getElementById("promissedPresent").innerHTML += `<li><span class="icon"></span>${present}</li>`;
+            presentsListEl.innerHTML += `<li><span class="icon"></span>${present}</li>`;
         });
+        let travelHelpFloat = parseFloat(travelHelpText.replace(/[^\d.-]/g, '').replace(',', '.'));
+        travelHelp = travelHelpFloat.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        presentsListEl.innerHTML += `<li><span class="icon"></span>${formattedTravelHelp}</li>`;
     } else {
         document.getElementById("errorModal").style.display = "flex";
     }
 }
 
-function confirmPromissedPresent() {
-    formatetPresents = [];
+async function confirmPromissedPresent() {
     let promisedBy = document.getElementById("promissedByInput").value;
-    document.getElementById("promissePresentModal").style.display = "none";
+
+    formatetPresents = [];
     choosedPresent.forEach(present => {
         updatePresent(present, true, promisedBy);
         formatetPresents.push(`🎁 ${present}\n`);
     });
-    setListValues();
-    sendEmail(promisedBy, formatetPresents, 'Casamento');
+    if(travelHelp != '') addTravelHelp(travelHelp, promisedBy);
+    await setListValues();
+    document.getElementById('inputTravelHelp').value = '';
+
+    sendEmail(promisedBy, [...formatetPresents, travelHelp], 'Casamento');
+    document.getElementById("promissePresentModal").style.display = "none";
     document.getElementById("successModal").style.display = "flex";
 }
 
