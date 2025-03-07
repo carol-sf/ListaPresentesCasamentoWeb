@@ -51,7 +51,7 @@ async function getPresents(isPromised, isPix = null) {
 let pixList = [];
 let availableList = [];
 let promisedList = [];
-let choosedPresent = ''
+let choosedPresent = [];
 
 init();
 
@@ -64,9 +64,14 @@ function listenEvents() {
     const checkboxes = document.querySelectorAll(".availablePresentCheck");
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener("change", function () {
-            checkboxes.forEach(cb => cb.checked = false); 
-            this.checked = true;
-            choosedPresent = this.value;
+            if(checkbox.checked) {
+                choosedPresent.push(this.value);
+            } else {
+                const index = choosedPresent.indexOf(this.value);
+                if (index !== -1) {
+                    choosedPresent.splice(index, 1);
+                }
+            }
         });
     });
 
@@ -133,20 +138,25 @@ async function openPromissePresentModal() {
     const hasChecked = document.querySelector(`#availablePresents .availablePresentCheck:checked`) !== null;
     if(hasChecked) {
         document.getElementById("promissePresentModal").style.display = "flex";
-        document.getElementById("promissedPresent").innerHTML = choosedPresent;
-        
-        console.log(choosedPresent)
+        document.getElementById("promissedPresent").innerHTML = '';
+        choosedPresent.forEach(present => {
+            document.getElementById("promissedPresent").innerHTML += `<li><span class="icon"></span>${present}</li>`;
+        });
     } else {
         document.getElementById("errorModal").style.display = "flex";
     }
 }
 
 function confirmPromissedPresent() {
+    formatetPresents = [];
     let promisedBy = document.getElementById("promissedByInput").value;
     document.getElementById("promissePresentModal").style.display = "none";
-    updatePresent(choosedPresent, true, promisedBy);
+    choosedPresent.forEach(present => {
+        updatePresent(present, true, promisedBy);
+        formatetPresents.push(`🎁 ${present}\n`);
+    });
     setListValues();
-    sendEmail(promisedBy, choosedPresent, 'Casamento');
+    sendEmail(promisedBy, formatetPresents, 'Chá de Panela');
 }
 
 function closeModal(modalId) {
