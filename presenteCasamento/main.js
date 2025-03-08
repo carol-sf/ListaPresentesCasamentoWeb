@@ -77,7 +77,7 @@ let promisedList = [];
 let choosedPresent = [];
 let travelHelp = '';
 const TRAVEL_TOTAL_VALUE = 2600;
-const PIX_KEY = 'testandooo';
+const PIX_KEY = '15731070776';
 
 init();
 

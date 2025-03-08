@@ -98,6 +98,18 @@ input[type="checkbox"] {
     background-color: #ff4d4d; 
 }
 
+.copyContainer {
+    background-color: #f1f1f1;
+    color: gray;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    margin: 10px 0;
+    padding: 10px 15px;
+    width: 88%;
+}
+
 
 
 /* MODAL */

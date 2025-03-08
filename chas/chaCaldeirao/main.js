@@ -49,10 +49,12 @@ async function getPresents(isPromised) {
 let availableList = [];
 let promisedList = [];
 let choosedPresent = [];
+const PIX_KEY = '15731070776';
 
 init();
 
 async function init() {
+    document.getElementById('pixKeyLabel').innerHTML = PIX_KEY;
     await setListValues();
     listenEvents();
 }
@@ -73,6 +75,7 @@ function listenEvents() {
     });
 
     document.getElementById('choosePresentButton').addEventListener('click', openPromissePresentModal);
+    document.getElementById('pixKeyContainer').addEventListener('click', copyPixKey);
 }
 
 async function setListValues() {
@@ -141,4 +144,26 @@ function confirmPromissedPresent() {
 
 function closeModal(modalId) {
     document.getElementById(modalId).style.display = "none";
+}
+
+function copyPixKey() {
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(PIX_KEY).then(() => {
+            alert("Chave Pix copiada!");
+        }).catch(err => {
+            console.error("Erro ao copiar chave Pix:", err);
+        });
+    } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = PIX_KEY;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand("copy");
+            alert("Chave Pix copiada!");
+        } catch (err) {
+            console.error("Erro ao copiar chave Pix:", err);
+        }
+        document.body.removeChild(textArea);
+    }
 }
