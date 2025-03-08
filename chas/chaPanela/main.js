@@ -135,7 +135,7 @@ function confirmPromissedPresent() {
         formatetPresents.push(`🎁 ${present}\n`);
     });
     setListValues();
-    sendEmail(promisedBy, formatetPresents, 'Chá de Panela');
+    // sendEmail(promisedBy, formatetPresents, 'Chá de Panela');
     document.getElementById("successModal").style.display = "flex";
 }
 

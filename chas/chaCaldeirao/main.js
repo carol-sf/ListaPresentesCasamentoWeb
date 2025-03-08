@@ -135,7 +135,7 @@ function confirmPromissedPresent() {
         formatetPresents.push(`🎁 ${present}\n`);
     });
     setListValues();
-    sendEmail(promisedBy, formatetPresents, 'Chá de Caldeirão');
+    // sendEmail(promisedBy, formatetPresents, 'Chá de Caldeirão');
     document.getElementById("successModal").style.display = "flex";
 }
 
