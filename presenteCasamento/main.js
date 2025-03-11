@@ -82,7 +82,11 @@ const PIX_KEY = '15731070776';
 init();
 
 async function init() {
-    document.getElementById('pixKeyLabel').innerHTML = PIX_KEY;
+    document.querySelectorAll('.pixKeyLabel').forEach(elemento => {
+        elemento.innerHTML = PIX_KEY;
+    });
+    
+
     await setListValues();
     listenEvents();
 }
@@ -103,7 +107,7 @@ function listenEvents() {
     });
 
     document.getElementById('choosePresentButton').addEventListener('click', openPromissePresentModal);
-    document.getElementById('pixKeyContainer').addEventListener('click', copyPixKey);
+    document.querySelectorAll(".pixKeyContainer").forEach(elem => elem.addEventListener('click', copyPixKey));
 }
 
 async function setListValues() {
