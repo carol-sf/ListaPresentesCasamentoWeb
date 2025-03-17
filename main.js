@@ -28,3 +28,7 @@ async function addDefaultPresents(colectionName, isPix) {
     if(isPix) colectionName = 'presentesCasamento';
     defaultPresentsList.forEach(presentName => addPresent(colectionName, presentName, isPix));
 }
+
+async function addPresentsList(colectionName, presentList) {
+    presentList.forEach(presentName => addPresent(colectionName, presentName, false));
+}

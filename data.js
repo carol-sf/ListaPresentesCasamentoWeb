@@ -182,3 +182,15 @@ window.chaCaldeirao = [
   'Filtro de café',
   'Alcool',
 ];
+
+
+window.remanecentesChas = [
+  '6 colmeias organizadoras dobráveis pequenas',
+  'Formas de silicone para microondas ',
+  'Mixer',
+  'Kit saladeira de inox',
+  'Toalha de mesa',
+  '2 cabides de porta com 7 ganchos',
+  'Kit cabide de guarda-roupa',
+  'Jogo de panelas',
+];
