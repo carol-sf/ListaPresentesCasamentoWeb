@@ -180,9 +180,11 @@ async function openPromissePresentModal() {
         choosedPresent.forEach(present => {
             presentsListEl.innerHTML += `<li><span class="icon"></span>${present}</li>`;
         });
-        let travelHelpFloat = parseFloat(travelHelpText.replace(/[^\d.-]/g, '').replace(',', '.'));
-        travelHelp = travelHelpFloat.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        presentsListEl.innerHTML += `<li><span class="icon"></span>${formattedTravelHelp}</li>`;
+        if(travelHelpText != '') {
+            let travelHelpFloat = parseFloat(travelHelpText.replace(/[^\d.-]/g, '').replace(',', '.'));
+            travelHelp = travelHelpFloat.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            presentsListEl.innerHTML += `<li><span class="icon"></span>${travelHelp}</li>`;
+        }
     } else {
         document.getElementById("errorModal").style.display = "flex";
     }
