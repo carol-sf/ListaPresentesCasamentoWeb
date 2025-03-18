@@ -194,3 +194,9 @@ window.remanecentesChas = [
   'Kit cabide de guarda-roupa',
   'Jogo de panelas',
 ];
+
+window.repetirPresentes = [
+  'Jogo de lençol casal',
+  'jogo de toalhacasal',
+  'toalha de mesa e cobre leito casal',
+]
